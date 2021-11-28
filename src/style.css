@@ -11,7 +11,7 @@
   --maxWidth-3xl: 48rem;
   --maxWidth-4xl: 56rem;
   --maxWidth-full: "100%";
-  --maxWidth-wrapper: var(--maxWidth-2xl);
+  --maxWidth-wrapper: 60rem;
   --spacing-px: "1px";
   --spacing-0: 0;
   --spacing-1: 0.25rem;
@@ -32,8 +32,9 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --fontFamily-serif: "Merriweather", "Georgia", Cambria, "Times New Roman",
     Times, serif;
-  --font-body: var(--fontFamily-serif);
-  --font-heading: var(--fontFamily-sans);
+  --font-base: -apple-system,"BlinkMacSystemFont","Hiragino Kaku Gothic ProN","Hiragino Sans",Meiryo,sans-serif,"Segoe UI Emoji";
+  --font-body: var(--font-base);
+  --font-heading: var(--font-base);
   --fontWeight-normal: 400;
   --fontWeight-medium: 500;
   --fontWeight-semibold: 600;
@@ -54,12 +55,14 @@
   --fontSize-5: 2.074rem;
   --fontSize-6: 2.488rem;
   --fontSize-7: 2.986rem;
-  --color-primary: #005b99;
   --color-text: #2e353f;
   --color-text-light: #4f5969;
   --color-heading: #1a202c;
   --color-heading-black: black;
   --color-accent: #d1dce5;
+  --color-primary: #59ae9b;
+  --color-primary-background: #59ae9b6b;
+  --color-body-background: #59ae9b1a;
 }
 
 /* HTML elements */
@@ -81,6 +84,8 @@ body {
   font-family: var(--font-body);
   font-size: var(--fontSize-1);
   color: var(--color-text);
+  height: 100%;
+  min-height: 100vh;
 }
 
 footer {
@@ -146,6 +151,8 @@ h6 {
 h1 > a {
   color: inherit;
   text-decoration: none;
+  font-size: var(--fontSize-5);
+  font-weight: var(--fontWeight-bold);
 }
 
 h2 > a,
@@ -230,7 +237,8 @@ table thead tr th {
 /* Link */
 
 a {
-  color: var(--color-primary);
+  color: black;
+  text-decoration: none;
 }
 
 a:hover,
@@ -244,10 +252,6 @@ a:focus {
   margin: var(--spacing-0) auto;
   max-width: var(--maxWidth-wrapper);
   padding: var(--spacing-10) var(--spacing-5);
-}
-
-.global-wrapper[data-is-root-path="true"] .bio {
-  margin-bottom: var(--spacing-20);
 }
 
 .global-header {
@@ -287,8 +291,14 @@ a:focus {
 }
 
 .bio {
+  margin: var(--spacing-12) 0;
+}
+
+.bio-inner {
   display: flex;
-  margin-bottom: var(--spacing-16);
+  padding: 1.3rem;
+  background: #f9f9f9f9;
+  border-radius: 8px;
 }
 
 .bio p {
@@ -307,7 +317,6 @@ a:focus {
 }
 
 .blog-post header p {
-  font-size: var(--fontSize-2);
   font-family: var(--font-heading);
 }
 
@@ -330,4 +339,145 @@ a:focus {
   ol {
     list-style-position: inside;
   }
+}
+
+
+/* サイトタイトル
+-------------------------------------------------*/
+.main-head-wrap{
+  display: flex;
+  align-items: center;
+}
+
+
+/* コード
+-------------------------------------------------*/
+pre > code[class*="language-"], pre[class*="language-"] {
+  border-radius: 5px;
+}
+
+
+/* 一覧画面
+-------------------------------------------------*/
+.index-list-container li{
+  margin-bottom: var(--spacing-5);
+}
+
+/* タブレット以上 */
+@media only screen and (min-width: 650px) {
+  .index-list-container li{
+    margin-bottom: var(--spacing-6);
+  }
+}
+
+.ArticleCard {
+  display: flex;
+  align-items: stretch;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px -1px #000a3c33;
+  overflow: hidden;
+}
+
+.ArticleCard_emojiContainer{
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.3rem;
+  background-color: var(--color-primary-background);
+}
+
+/* タブレット以上 */
+@media only screen and (min-width: 650px) {
+  .ArticleCard_emojiContainer{
+    padding: 1.8rem 2.3rem;
+  }
+}
+
+.ArticleCard_emojiContainer .emoji{
+  font-size: 25px;
+}
+
+/* タブレット以上 */
+@media only screen and (min-width: 650px) {
+  .ArticleCard_emojiContainer .emoji{
+    font-size: 40px;
+  }
+}
+
+.ArticleCard_infoContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+}
+
+.ArticleCard_titleContainer{
+  padding: 10px 0;
+}
+
+.ArticleCard_title{
+  margin: auto;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+/* 詳細画面
+-------------------------------------------------*/
+
+.post-header-wrap{
+  text-align: center;
+}
+
+.post-icon{
+  font-size: var(--fontSize-5);
+  margin: 10px;
+}
+
+/* タブレット以上 */
+@media only screen and (min-width: 650px) {
+  .post-icon{
+    font-size: var(--fontSize-7);
+    margin: 10px;
+  }
+}
+
+.post-header-wrap h1{
+  font-size: var(--fontSize-3);
+}
+
+/* タブレット以上 */
+@media only screen and (min-width: 650px) {
+  .post-header-wrap h1{
+    font-size: var(--fontSize-5);
+  }
+}
+
+.post-created-at{
+  font-size: var(--fontSize-1);
+  color: var(--color-text-light);
+}
+
+.content-wrapper{
+  padding: 10px 6%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px -2px #397065e3;
+  margin-bottom: 30px;
+}
+
+.blog-post img {
+  max-width: 90%;
+  margin: auto;
+  display: block;
+  box-shadow: 0 2px 4px #cdcdcd;
+  border-radius: 8px;
+}
+
+/* フッター
+-------------------------------------------------*/
+footer{
+  display: flex;
+}
+
+.footer-link-home{
+  margin: auto;
 }

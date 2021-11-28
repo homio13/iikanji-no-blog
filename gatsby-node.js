@@ -10,19 +10,24 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Get all markdown blog posts sorted by date
   const result = await graphql(
     `
-      {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: ASC }
-          limit: 1000
-        ) {
-          nodes {
-            id
-            fields {
-              slug
-            }
+    {
+      allMarkdownRemark(
+        filter: {frontmatter: {Published: {eq: true}}}
+        sort: {fields: frontmatter___CreatedAt, order: DESC}
+      ) {
+        nodes {
+          id
+          frontmatter {
+            title
+            Published
+            Slug
+            Icon
+            CreatedAt(formatString: "YYYY/MM/DD")
+            UpdatedAt(formatString: "YYYY/MM/DD")
           }
         }
       }
+    }
     `
   )
 
@@ -45,8 +50,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const previousPostId = index === 0 ? null : posts[index - 1].id
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
 
+      const path = `/blog/${post.frontmatter.Slug}`;
+
       createPage({
-        path: post.fields.slug,
+        path: path,
         component: blogPost,
         context: {
           id: post.id,
@@ -58,7 +65,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 }
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+/*exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
@@ -70,7 +77,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       value,
     })
   }
-}
+}*/
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
@@ -99,17 +106,12 @@ exports.createSchemaCustomization = ({ actions }) => {
 
     type MarkdownRemark implements Node {
       frontmatter: Frontmatter
-      fields: Fields
     }
 
     type Frontmatter {
       title: String
       description: String
       date: Date @dateformat
-    }
-
-    type Fields {
-      slug: String
     }
   `)
 }

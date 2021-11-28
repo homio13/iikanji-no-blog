@@ -14,7 +14,7 @@ const BlogPostTemplate = ({ data, location }) => {
     <Layout location={location} title={siteTitle}>
       <Seo
         title={post.frontmatter.title}
-        description={post.frontmatter.description || post.excerpt}
+        description={post.excerpt}
       />
       <article
         className="blog-post"
@@ -22,17 +22,20 @@ const BlogPostTemplate = ({ data, location }) => {
         itemType="http://schema.org/Article"
       >
         <header>
-          <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <div className="post-header-wrap">
+            <div className="post-icon">{post.frontmatter.Icon}</div>
+            <h1 itemProp="headline"> {post.frontmatter.title}</h1>
+            <p className="post-created-at">🕣 {post.frontmatter.CreatedAt.replaceAll('/', '.')}</p>
+          </div>
         </header>
-        <section
-          dangerouslySetInnerHTML={{ __html: post.html }}
-          itemProp="articleBody"
-        />
+        <div className="content-wrapper">
+          <section
+            dangerouslySetInnerHTML={{ __html: post.html }}
+            itemProp="articleBody"
+          />
+        </div>
         <hr />
-        <footer>
-          <Bio />
-        </footer>
+        <Bio />
       </article>
       <nav className="blog-post-nav">
         <ul
@@ -46,15 +49,15 @@ const BlogPostTemplate = ({ data, location }) => {
         >
           <li>
             {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
+              <Link to={`/blog/${previous.frontmatter.Slug}`} rel="prev">
+                ← {previous.frontmatter.Icon} {previous.frontmatter.title}
               </Link>
             )}
           </li>
           <li>
             {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
+              <Link to={`/blog/${next.frontmatter.Slug}`} rel="next">
+                {next.frontmatter.Icon} {next.frontmatter.title} →
               </Link>
             )}
           </li>
@@ -77,30 +80,30 @@ export const pageQuery = graphql`
         title
       }
     }
-    markdownRemark(id: { eq: $id }) {
+    markdownRemark(id: {eq: $id}) {
       id
-      excerpt(pruneLength: 160)
       html
+      excerpt
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
-        description
+        Slug
+        Icon
+        CreatedAt(formatString: "YYYY/MM/DD")
+        UpdatedAt(formatString: "YYYY/MM/DD")
       }
     }
     previous: markdownRemark(id: { eq: $previousPostId }) {
-      fields {
-        slug
-      }
       frontmatter {
         title
+        Slug
+        Icon
       }
     }
     next: markdownRemark(id: { eq: $nextPostId }) {
-      fields {
-        slug
-      }
       frontmatter {
         title
+        Slug
+        Icon
       }
     }
   }
